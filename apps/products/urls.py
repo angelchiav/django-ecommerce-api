@@ -6,5 +6,3 @@ router.register(r'', ProductViewSets, basename='product')
 router.register(r'', CategoryViewSets, basename='category')
 
 urlpatterns = router.urls
-
-

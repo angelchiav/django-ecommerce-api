@@ -19,3 +19,17 @@ class User(AbstractUser):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} ({self.email})"
+
+class Address(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='addresses')
+    street = models.CharField(max_length=250)
+    city = models.CharField(max_length=100)
+    country = models.CharField(max_length=100)
+    postal_code = models.CharField(max_length=20)
+    is_default = models.BooleanField(default=True)
+    class Meta:
+        verbose_name_plural = 'addresses'
+        
+    def __str__(self):
+        return f'{self.street}, {self.city}, {self.country}'
+    

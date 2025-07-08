@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'apps.users.apps.UsersConfig',
     'apps.products.apps.ProductsConfig',
+    'apps.orders.apps.OrdersConfig',
     'drf_spectacular',
 ]
 
