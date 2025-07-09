@@ -1,30 +1,67 @@
 from django.db import models
-import uuid
-from apps.users.models import User, Address
+from django.conf import settings
 
 class Order(models.Model):
-    ORDER_STATUS_CHOICES = [
+    STATUS_CHOICES = [
         ('pending', 'Pending'),
-        ('paid', 'Paid'),
         ('processing', 'Processing'),
         ('shipped', 'Shipped'),
-        ('delivered', 'Delivered'),
-        ('cancelled', 'Cancelled'),
-        ('refunded', 'Refunded'),
-        ('failed', 'Failed')
+        ('completed', 'Completed'),
+        ('cancelled', 'Cancelled')
     ]
-    id = models.UUIDField(
-        primary_key=True,
-        unique=True,
-        default=uuid.uuid4,
-        editable=False
+    order_number = models.CharField('Order number', max_length=20, unique=True)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, 
+        on_delete=models.CASCADE,
+        related_name='orders'
     )
-    name = models.CharField(max_length=150)
-    user = models.ForeignKey(User, on_delete=models.PROTECT, related_name='order')
-    total_price = models.DecimalField(max_digits=12, decimal_places=2)
-    status = models.CharField(max_length=15, choices=ORDER_STATUS_CHOICES,default='pending')
-    address = models.ForeignKey(Address, on_delete=models.SET_NULL, null=True)
-    
+    status = models.CharField(
+        'Status',
+        max_length=10,
+        choices=STATUS_CHOICES,
+        default='pending'
+    )
+    total_amount = models.DecimalField(
+        'Total amount',
+        max_digits=10,
+        decimal_places=2
+    )
+    shipping_address = models.TextField('Shipping Address')
+    created_at = models.DateTimeField('Created at', auto_now_add=True)
+    updated_at = models.DateTimeField('Updated at', auto_now=True)
+    class Meta:
+        verbose_name = 'Order'
+        verbose_name_plural = 'Orders'
+        ordering = ['-created_at']
 
     def __str__(self):
-        return f'{self.id} - {self.user} {self.total_price} --> {self.status}'
+        return f"#{self.order_number} - ({self.user})"
+    
+class OrderItem(models.Model):
+    order = models.ForeignKey(
+        Order,
+        on_delete=models.CASCADE,
+        related_name='items'
+    )
+    product = models.ForeignKey(
+        'catalog.Product',
+        on_delete=models.PROTECT,
+        related_name='+'
+    )
+    quantity = models.PositiveIntegerField('Quantity', default=1)
+    unit_price = models.DecimalField(
+        'Unit price',
+        max_digits=10,
+        decimal_places=2
+    )
+    subtotal = models.DecimalField(
+        'Subtotal',
+        max_digits=10,
+        decimal_places=2
+    )
+    class Meta:
+        verbose_name = 'Order Item'
+        verbose_name_plural = 'Order Items'
+    
+    def __str__(self):
+        return f"{self.quantity} x {self.product}"
