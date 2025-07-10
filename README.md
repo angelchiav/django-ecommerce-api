@@ -166,5 +166,3 @@ This project is licensed under a custom license. See the [LICENSE](LICENSE) file
 - All contributors who help improve this project
 
 ---
-
-Made with ❤️ by Angel Chia Vicuña
