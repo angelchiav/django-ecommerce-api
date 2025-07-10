@@ -15,6 +15,18 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Django Ecommerce API',
+    'DESCRIPTION': 'Django Ecommerce API',
+    'VERSION': '0.0.1',
+    'SERVE_INCLUDE_SCHEMA': False,
+}
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
 
 # User model definition
 
@@ -29,10 +41,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'drf_spectacular',
     'rest_framework',
     'apps.accounts',
     'apps.catalog',
     'apps.orders',
+    'apps.carts',
 ]
 
 MIDDLEWARE = [
