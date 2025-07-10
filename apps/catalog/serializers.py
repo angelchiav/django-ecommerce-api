@@ -9,7 +9,7 @@ class CategorySerializer(serializers.ModelSerializer):
 class ProductImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductImage
-        fields = ['id', 'image', 'alt_text', 'order', 'is_featured']
+        fields = ['id', 'image', 'order', 'is_featured']
 
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
@@ -21,12 +21,12 @@ class ProductSerializer(serializers.ModelSerializer):
         read_only_fields = ['id', 'created_at']
         
     def validate_price(self, value):
-        if value <= 0:
+        if value < 0:
             raise serializers.ValidationError("The price cannot be negative.")
         return value
     
     def validate_stock(self, value):
-        if value <= 0:
+        if value < 0:
             raise serializers.ValidationError("The product is not available.")
         return value
     

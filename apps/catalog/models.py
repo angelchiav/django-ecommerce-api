@@ -11,7 +11,7 @@ class Category(models.Model):
         blank=True, null=True,
         verbose_name='Father category'
     )
-    is_active = models.BooleanField('Is active', default=False)
+    is_active = models.BooleanField('Is active', default=True)
     created_at = models.DateTimeField('Created at', auto_now_add=True)
     updated_at = models.DateTimeField('Updated at', auto_now=True)
 
