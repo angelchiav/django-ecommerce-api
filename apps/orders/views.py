@@ -4,7 +4,7 @@ from .serializers import OrderSerializer, OrderItemSerializer
 
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all().order_by('-created_at')
-    serializer_class = OrderItemSerializer
+    serializer_class = OrderSerializer
     permission_classes = [permissions.IsAuthenticated]
 
 class OrderItemViewSet(viewsets.ModelViewSet):
