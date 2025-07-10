@@ -11,7 +11,7 @@ class User(AbstractUser):
     is_email_verified = models.BooleanField("Is Email Verified", default=False)
     phone = models.CharField("Phone Number", max_length=30, blank=True)
     is_phone_verified = models.BooleanField("Is Phone Verified", default=False)
-    role = models.CharField("Role", max_length=10, choices=ROLES_CHOICES)
+    role = models.CharField("Role", max_length=10, choices=ROLES_CHOICES, default='customer')
     date_of_birth = models.DateTimeField("Date of Birth", blank=True, null=True)
     profile_image = models.ImageField("Profile Picture", upload_to='profiles/', null=True, blank=True)
 
