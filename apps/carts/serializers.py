@@ -39,7 +39,7 @@ class CartItemSerializer(serializers.ModelSerializer):
     
 
 class CartSerializer(serializers.ModelSerializer):
-    items = CartItemSerializer(many=True)
+    items = CartItemSerializer(many=True, read_only=True)
     total_amount = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
     class Meta:
         model = Cart
@@ -74,16 +74,6 @@ class CartSerializer(serializers.ModelSerializer):
             total += subtotal
         cart.refresh_from_db()
         return cart
-    
-    def validate(self, data):
-        product = data.get('product')
-        quantity = data.get('quantity', 1)
-        if product.stock < quantity:
-            raise serializers.ValidationError(
-                f"Insufficient stock.  Available: {product.stock}"
-            )
-        return data
-
 
     def update(self, instance, validated_data):
         items_data = validated_data.pop('items', [])

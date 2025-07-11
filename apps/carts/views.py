@@ -10,7 +10,6 @@ class CartViewSet(viewsets.ModelViewSet):
     serializer_class = CartSerializer
     permission_classes = [permissions.IsAuthenticated]
     filter_backends = [filters.OrderingFilter]
-    filterset_fields = ['user', 'session_key', 'is_active']
     ordering_fields = ['updated_at', 'created_at']
 
     def get_queryset(self):
