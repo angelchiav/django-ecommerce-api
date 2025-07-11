@@ -13,10 +13,10 @@ class CartItemSerializer(serializers.ModelSerializer):
             'quantity',
             'unit_price',
             'subtotal',
-            'created_at',
+            'added_at',
             'updated_at'
         ]
-        read_only_fields = ['unit_price', 'subtotal', 'created_at', 'updated_at']
+        read_only_fields = ['unit_price', 'subtotal', 'added_at', 'updated_at']
 
     def create(self, validated_data):
         product = validated_data['product']
@@ -31,9 +31,6 @@ class CartItemSerializer(serializers.ModelSerializer):
             instance.subtotal = instance.unit_price * instance.quantity
         instance.save()
         return instance
-
-
-
         
     def validate_quantity(self, value):
         if value <= 0:
@@ -56,15 +53,15 @@ class CartSerializer(serializers.ModelSerializer):
             'items',
             'total_amount'
         ]
-        read_only_fields = ['id', 'user' 'created_at', 'updated_at', 'total_amount']
+        read_only_fields = ['id', 'user', 'created_at', 'updated_at', 'total_amount']
 
     def create(self, validated_data):
         items_data = validated_data.pop('items', [])
         cart = Cart.objects.create(**validated_data)
-        total = Decimal('O.OO')
-        for item in items_data:
-            product = items_data['product']
-            quantity = items_data['quantity']
+        total = Decimal('0.00')
+        for item_data in items_data:
+            product = item_data['product']
+            quantity = item_data['quantity']
             unit_price = product.unit_price
             subtotal = unit_price * quantity
             CartItem.objects.create(
@@ -78,6 +75,16 @@ class CartSerializer(serializers.ModelSerializer):
         cart.refresh_from_db()
         return cart
     
+    def validate(self, data):
+        product = data.get('product')
+        quantity = data.get('quantity', 1)
+        if product.stock < quantity:
+            raise serializers.ValidationError(
+                f"Insufficient stock.  Available: {product.stock}"
+            )
+        return data
+
+
     def update(self, instance, validated_data):
         items_data = validated_data.pop('items', [])
         for attr, value in validated_data.items():

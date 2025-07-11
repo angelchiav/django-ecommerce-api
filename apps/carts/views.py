@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from rest_framework import viewsets, permissions, filters
+from rest_framework.response import Response
 from .models import Cart, CartItem
 from .serializers import CartItemSerializer, CartSerializer
 
@@ -27,6 +28,11 @@ class CartViewSet(viewsets.ModelViewSet):
             user=user if user.is_authenticated else None,
             session_key=None if user.is_authenticated else session_key
         )
+
+    def clear(self, request, pk=None):
+        cart = self.get_object()
+        cart.items.all().delete()
+        return Response({'status': 'cart cleared'})
 
 class CartItemViewSet(viewsets.ModelViewSet):
     queryset = CartItem.objects.all()
