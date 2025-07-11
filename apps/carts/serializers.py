@@ -13,10 +13,10 @@ class CartItemSerializer(serializers.ModelSerializer):
             'quantity',
             'unit_price',
             'subtotal',
-            'created_at',
+            'added_at',
             'updated_at'
         ]
-        read_only_fields = ['unit_price', 'subtotal', 'created_at', 'updated_at']
+        read_only_fields = ['unit_price', 'subtotal', 'added_at', 'updated_at']
 
     def create(self, validated_data):
         product = validated_data['product']
@@ -31,9 +31,6 @@ class CartItemSerializer(serializers.ModelSerializer):
             instance.subtotal = instance.unit_price * instance.quantity
         instance.save()
         return instance
-
-
-
         
     def validate_quantity(self, value):
         if value <= 0:
@@ -42,7 +39,7 @@ class CartItemSerializer(serializers.ModelSerializer):
     
 
 class CartSerializer(serializers.ModelSerializer):
-    items = CartItemSerializer(many=True)
+    items = CartItemSerializer(many=True, read_only=True)
     total_amount = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
     class Meta:
         model = Cart
@@ -56,15 +53,15 @@ class CartSerializer(serializers.ModelSerializer):
             'items',
             'total_amount'
         ]
-        read_only_fields = ['id', 'user' 'created_at', 'updated_at', 'total_amount']
+        read_only_fields = ['id', 'user', 'created_at', 'updated_at', 'total_amount']
 
     def create(self, validated_data):
         items_data = validated_data.pop('items', [])
         cart = Cart.objects.create(**validated_data)
-        total = Decimal('O.OO')
-        for item in items_data:
-            product = items_data['product']
-            quantity = items_data['quantity']
+        total = Decimal('0.00')
+        for item_data in items_data:
+            product = item_data['product']
+            quantity = item_data['quantity']
             unit_price = product.unit_price
             subtotal = unit_price * quantity
             CartItem.objects.create(
@@ -77,7 +74,7 @@ class CartSerializer(serializers.ModelSerializer):
             total += subtotal
         cart.refresh_from_db()
         return cart
-    
+
     def update(self, instance, validated_data):
         items_data = validated_data.pop('items', [])
         for attr, value in validated_data.items():

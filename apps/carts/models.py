@@ -59,11 +59,11 @@ class CartItem(models.Model):
         unique_together = ('cart', 'product')
         ordering = ['added_at']
     
-    def __str__(self):
-        return f"{self.quantity} x {self.product.name}"
-    
     def save(self, *args, **kwargs):
         if not self.unit_price:
             self.unit_price = self.product.price
         self.subtotal = self.quantity * self.unit_price
         super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.quantity} x {self.product.name}"
