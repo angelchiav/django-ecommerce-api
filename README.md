@@ -133,7 +133,7 @@ This project is currently under active development. The following features are p
 - [ ] Product reviews and ratings
 - [ ] Advanced search and filtering
 - [ ] Email notifications
-- [ ] API documentation with Swagger/OpenAPI
+- [ X ] API documentation with Swagger/OpenAPI
 - [ ] Wishlist functionality
 - [ ] Inventory tracking
 - [ ] Discount and coupon system

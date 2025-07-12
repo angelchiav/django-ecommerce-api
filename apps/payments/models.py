@@ -7,16 +7,16 @@ class Payment(models.Model):
     """
     Registro de pago asociado a una Order.
     """
-    STATUS_PENDING    = 'pending'
-    STATUS_SUCCEEDED  = 'succeeded'
-    STATUS_FAILED     = 'failed'
-    STATUS_CANCELED   = 'canceled'
+    STATUS_PENDING = 'pending'
+    STATUS_SUCCEEDED = 'succeeded'
+    STATUS_FAILED = 'failed'
+    STATUS_CANCELED = 'canceled'
 
     STATUS_CHOICES = [
-        (STATUS_PENDING,   'Pending'),
+        (STATUS_PENDING, 'Pending'),
         (STATUS_SUCCEEDED, 'Succeeded'),
-        (STATUS_FAILED,    'Failed'),
-        (STATUS_CANCELED,  'Canceled'),
+        (STATUS_FAILED, 'Failed'),
+        (STATUS_CANCELED, 'Canceled'),
     ]
 
     order = models.OneToOneField(
@@ -54,9 +54,9 @@ class Payment(models.Model):
     )
 
     class Meta:
-        verbose_name        = 'Payment'
+        verbose_name = 'Payment'
         verbose_name_plural = 'Payments'
-        ordering            = ['-created_at']
+        ordering = ['-created_at']
 
     def __str__(self):
         return f"Payment {self.id} for {self.order.order_number} ({self.get_status_display()})"
@@ -86,9 +86,9 @@ class PaymentTransaction(models.Model):
     )
 
     class Meta:
-        verbose_name        = 'Payment Transaction'
+        verbose_name = 'Payment Transaction'
         verbose_name_plural = 'Payment Transactions'
-        ordering            = ['-created_at']
+        ordering = ['-created_at']
 
     def __str__(self):
         status = 'OK' if self.success else 'FAIL'
