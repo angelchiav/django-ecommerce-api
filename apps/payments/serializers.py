@@ -7,7 +7,7 @@ class PaymentTransactionSerializer(serializers.ModelSerializer):
     raw_response = serializers.JSONField(read_only=True)
     created_at = serializers.DateTimeField(read_only=True)
     class Meta:
-        model = Payment
+        model = PaymentTransaction
         fields = [
             'id',
             'success',

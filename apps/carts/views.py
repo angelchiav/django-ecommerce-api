@@ -16,7 +16,7 @@ class CartViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         user = self.request.user
         session_key = self.request.session.session_key or self.request.session.create()
-        if user and user.is_authenticated:
+        if user.is_authenticated:
             return Cart.objects.filter(user=user, is_active=True)
         else:
             if not session_key:
