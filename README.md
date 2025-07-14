@@ -1,22 +1,26 @@
 # Django E-commerce API
 
-A modular and scalable RESTful API for an e-commerce platform built with Django and Django REST Framework. This project provides a robust backend solution for modern e-commerce applications with features including user authentication, product catalog management, and order processing.
+A robust, scalable RESTful API for e-commerce platforms built with Django and Django REST Framework. This project provides a comprehensive backend solution for modern e-commerce applications with features including user authentication, product catalog management, shopping cart functionality, order processing, and payment handling.
 
 ## 🚀 Features
 
 - **User Management**: Custom user model with role-based access (Customer, Seller, Admin)
-- **Authentication**: Secure user registration and authentication system
-- **Product Catalog**: Complete product and category management
-- **Order Management**: Full order lifecycle handling with order items
-- **RESTful API**: Clean and intuitive API endpoints following REST principles
-- **Modular Architecture**: Organized into separate Django apps for maintainability
+- **Authentication**: JWT-based authentication with token refresh
+- **Product Catalog**: Complete product and category management with image support
+- **Shopping Cart**: Full cart functionality for both authenticated and guest users
+- **Order Management**: End-to-end order lifecycle handling with order items
+- **Payment Processing**: Flexible payment integration with transaction tracking
+- **API Documentation**: Interactive API documentation with Swagger/ReDoc
+- **Modular Architecture**: Organized into separate Django apps for maintainability and scalability
 
 ## 📋 Requirements
 
 - Python 3.8+
 - Django 5.2.4
 - Django REST Framework 3.16.0
-- SQLite (default) or PostgreSQL/MySQL for production
+- djangorestframework-simplejwt 5.5.0
+- drf-spectacular 0.28.0
+- Other dependencies listed in requirements.txt
 
 ## 🛠️ Installation
 
@@ -65,7 +69,9 @@ django-ecommerce-api/
 ├── apps/
 │   ├── accounts/       # User authentication and profiles
 │   ├── catalog/        # Products and categories
-│   └── orders/         # Order management
+│   ├── carts/          # Shopping cart functionality
+│   ├── orders/         # Order management
+│   └── payments/       # Payment processing
 ├── ecommerce/          # Project configuration
 ├── manage.py
 ├── requirements.txt
@@ -76,6 +82,8 @@ django-ecommerce-api/
 
 ### Authentication
 - `POST /api/accounts/register/` - User registration
+- `POST /api/token/` - Obtain JWT token
+- `POST /api/token/refresh/` - Refresh JWT token
 - `GET /api/accounts/user/me/` - Get current user profile
 - `POST /api/accounts/user/{id}/change_password/` - Change password
 
@@ -85,16 +93,28 @@ django-ecommerce-api/
 - `GET /api/catalog/products/{slug}/` - Get product details
 - `PUT /api/catalog/products/{slug}/` - Update product
 - `DELETE /api/catalog/products/{slug}/` - Delete product
-
 - `GET /api/catalog/categories/` - List all categories
 - `POST /api/catalog/categories/` - Create a new category
 - `GET /api/catalog/categories/{slug}/` - Get category details
+
+### Shopping Cart
+- `GET /api/carts/carts/` - Get user's active cart
+- `POST /api/carts/carts/` - Create a new cart
+- `POST /api/carts/cart-items/` - Add item to cart
+- `PUT /api/carts/cart-items/{id}/` - Update cart item
+- `DELETE /api/carts/cart-items/{id}/` - Remove item from cart
 
 ### Orders
 - `GET /api/orders/orders/` - List user orders
 - `POST /api/orders/orders/` - Create a new order
 - `GET /api/orders/orders/{id}/` - Get order details
 - `PUT /api/orders/orders/{id}/` - Update order status
+
+### Payments
+- `GET /api/payments/payments/` - List payments
+- `POST /api/payments/payments/` - Create a new payment
+- `GET /api/payments/payments/{id}/` - Get payment details
+- `GET /api/payments/payment-transactions/` - List payment transactions
 
 ## 📊 Data Models
 
@@ -103,19 +123,33 @@ django-ecommerce-api/
 - Added fields: email (unique), phone, role, address details
 - Roles: Customer, Seller, Admin
 
-### Product Model
-- SKU, name, slug, description, price, stock
-- Many-to-many relationship with categories
+### Product & Category Models
+- Products with SKU, name, slug, description, price, stock
+- Categories with hierarchical structure (parent-child relationships)
 - Support for multiple product images
 
-### Order Model
+### Cart & CartItem Models
+- Support for both authenticated and guest users (session-based)
+- Tracking of items, quantities, and prices
+
+### Order & OrderItem Models
 - Order number, status tracking, total amount
 - Linked to user and contains order items
 - Status options: pending, processing, shipped, completed, cancelled
 
+### Payment Models
+- Payment processing with transaction tracking
+- Support for different payment statuses and currencies
+
 ## 🔐 Authentication
 
-The API uses Django's built-in authentication system with token-based authentication for API access. Protected endpoints require authentication headers.
+The API uses JWT (JSON Web Tokens) for authentication. Protected endpoints require the Authorization header with the format: `Bearer <token>`.
+
+## 📚 API Documentation
+
+Interactive API documentation is available at:
+- Swagger UI: `/api/docs/swagger/`
+- ReDoc: `/api/docs/redoc/`
 
 ## 🧪 Testing
 
@@ -126,10 +160,9 @@ python manage.py test
 
 ## 🚧 Development Status
 
-This project is currently under active development. The following features are planned:
+This project is currently under active development. The following features are planned for future releases:
 
-- [ ] Payment integration
-- [ ] Shopping cart functionality
+- [ ] Advanced payment gateway integrations
 - [ ] Product reviews and ratings
 - [ ] Advanced search and filtering
 - [ ] Email notifications
@@ -137,6 +170,8 @@ This project is currently under active development. The following features are p
 - [ ] Wishlist functionality
 - [ ] Inventory tracking
 - [ ] Discount and coupon system
+- [ ] User address book
+- [ ] Order history and reordering
 
 ## 🤝 Contributing
 
