@@ -1,22 +1,27 @@
 # Django E-commerce API
 
-A modular and scalable RESTful API for an e-commerce platform built with Django and Django REST Framework. This project provides a robust backend solution for modern e-commerce applications with features including user authentication, product catalog management, and order processing.
+A robust, scalable RESTful API for e-commerce platforms built with Django and Django REST Framework. This project provides a comprehensive backend solution for modern e-commerce applications with features including user authentication, product catalog management, shopping cart functionality, order processing, and payment handling.
 
 ## 🚀 Features
 
 - **User Management**: Custom user model with role-based access (Customer, Seller, Admin)
-- **Authentication**: Secure user registration and authentication system
-- **Product Catalog**: Complete product and category management
-- **Order Management**: Full order lifecycle handling with order items
-- **RESTful API**: Clean and intuitive API endpoints following REST principles
-- **Modular Architecture**: Organized into separate Django apps for maintainability
+- **Authentication**: JWT-based authentication with token refresh
+- **Product Catalog**: Complete product and category management with image support
+- **Shopping Cart**: Full cart functionality for both authenticated and guest users with stock validation
+- **Order Management**: End-to-end order lifecycle handling with order items
+- **Payment Processing**: Flexible payment integration with transaction tracking
+- **API Documentation**: Interactive API documentation with Swagger/ReDoc
+- **Modular Architecture**: Organized into separate Django apps for maintainability and scalability
+- **Permission System**: Granular permissions with read-only access for public endpoints
 
 ## 📋 Requirements
 
 - Python 3.8+
 - Django 5.2.4
 - Django REST Framework 3.16.0
-- SQLite (default) or PostgreSQL/MySQL for production
+- djangorestframework-simplejwt 5.5.0
+- drf-spectacular 0.28.0
+- Other dependencies listed in requirements.txt
 
 ## 🛠️ Installation
 
@@ -65,7 +70,9 @@ django-ecommerce-api/
 ├── apps/
 │   ├── accounts/       # User authentication and profiles
 │   ├── catalog/        # Products and categories
-│   └── orders/         # Order management
+│   ├── carts/          # Shopping cart functionality
+│   ├── orders/         # Order management
+│   └── payments/       # Payment processing
 ├── ecommerce/          # Project configuration
 ├── manage.py
 ├── requirements.txt
@@ -76,19 +83,28 @@ django-ecommerce-api/
 
 ### Authentication
 - `POST /api/accounts/register/` - User registration
+- `POST /api/token/` - Obtain JWT token
+- `POST /api/token/refresh/` - Refresh JWT token
 - `GET /api/accounts/user/me/` - Get current user profile
 - `POST /api/accounts/user/{id}/change_password/` - Change password
 
 ### Catalog
-- `GET /api/catalog/products/` - List all products
-- `POST /api/catalog/products/` - Create a new product
-- `GET /api/catalog/products/{slug}/` - Get product details
-- `PUT /api/catalog/products/{slug}/` - Update product
-- `DELETE /api/catalog/products/{slug}/` - Delete product
+- `GET /api/catalog/products/` - List all products (public)
+- `POST /api/catalog/products/` - Create a new product (admin only)
+- `GET /api/catalog/products/{slug}/` - Get product details (public)
+- `PUT /api/catalog/products/{slug}/` - Update product (admin only)
+- `DELETE /api/catalog/products/{slug}/` - Delete product (admin only)
+- `GET /api/catalog/categories/` - List all categories (public)
+- `POST /api/catalog/categories/` - Create a new category (admin only)
+- `GET /api/catalog/categories/{slug}/` - Get category details (public)
 
-- `GET /api/catalog/categories/` - List all categories
-- `POST /api/catalog/categories/` - Create a new category
-- `GET /api/catalog/categories/{slug}/` - Get category details
+### Shopping Cart
+- `GET /api/carts/carts/current/` - Get user's current cart
+- `POST /api/carts/carts/add_item/` - Add item to cart
+- `POST /api/carts/carts/remove_item/` - Remove item from cart
+- `POST /api/carts/carts/update_item/` - Update cart item quantity
+- `POST /api/carts/carts/clear/` - Clear cart
+- `GET /api/carts/cart-items/` - List cart items
 
 ### Orders
 - `GET /api/orders/orders/` - List user orders
@@ -96,26 +112,76 @@ django-ecommerce-api/
 - `GET /api/orders/orders/{id}/` - Get order details
 - `PUT /api/orders/orders/{id}/` - Update order status
 
+### Payments
+- `GET /api/payments/payments/` - List payments
+- `POST /api/payments/payments/` - Create a new payment
+- `GET /api/payments/payments/{id}/` - Get payment details
+- `GET /api/payments/payment-transactions/` - List payment transactions
+
 ## 📊 Data Models
 
 ### User Model
 - Extended Django's AbstractUser
 - Added fields: email (unique), phone, role, address details
 - Roles: Customer, Seller, Admin
+- Built-in verification flags for email and phone
 
-### Product Model
-- SKU, name, slug, description, price, stock
-- Many-to-many relationship with categories
-- Support for multiple product images
+### Product & Category Models
+- Products with SKU, name, slug, description, price, stock
+- Categories with hierarchical structure (parent-child relationships)
+- Support for multiple product images with ordering
+- Automatic slug generation from names
 
-### Order Model
+### Cart & CartItem Models
+- Support for both authenticated and guest users (session-based)
+- Tracking of items, quantities, and prices
+- Stock validation on cart operations
+- Automatic price calculation and cart totals
+
+### Order & OrderItem Models
 - Order number, status tracking, total amount
 - Linked to user and contains order items
 - Status options: pending, processing, shipped, completed, cancelled
+- Automatic total calculation from order items
 
-## 🔐 Authentication
+### Payment Models
+- Payment processing with transaction tracking
+- Support for different payment statuses and currencies
+- OneToOne relationship with orders
+- Transaction history for audit trails
 
-The API uses Django's built-in authentication system with token-based authentication for API access. Protected endpoints require authentication headers.
+## 🔐 Authentication & Permissions
+
+The API uses JWT (JSON Web Tokens) for authentication. Protected endpoints require the Authorization header with the format: `Bearer <token>`.
+
+### Permission Levels:
+- **Public**: Anyone can view products and categories
+- **Authenticated**: Users can manage their own carts and orders
+- **Admin**: Full CRUD access to products, categories, and all data
+
+## 📚 API Documentation
+
+Interactive API documentation is available at:
+- Swagger UI: `/api/docs/swagger/`
+- ReDoc: `/api/docs/redoc/`
+- Schema: `/api/schema/`
+
+## 🛒 Shopping Cart Features
+
+- **Session-based carts** for guest users
+- **User-based carts** for authenticated users
+- **Stock validation** on add/update operations
+- **Automatic price calculation** for cart items and totals
+- **Cart item management** with quantity updates and removals
+- **Cart persistence** across sessions
+
+## 💳 Payment System
+
+- **Multiple payment statuses**: pending, succeeded, failed, canceled
+- **Transaction tracking** for audit and webhook handling
+- **Payment-Order linking** with OneToOne relationship
+- **Currency support** with ISO3 codes
+- **Transaction history** with raw response storage
 
 ## 🧪 Testing
 
@@ -126,17 +192,38 @@ python manage.py test
 
 ## 🚧 Development Status
 
-This project is currently under active development. The following features are planned:
+This project is currently under active development. Recent improvements include:
 
-- [ ] Payment integration
-- [ ] Shopping cart functionality
+### ✅ Completed Features:
+- ✅ API documentation with Swagger/OpenAPI
+- ✅ Enhanced cart functionality with stock validation
+- ✅ Improved permission system with read-only public access
+- ✅ Better cart management with session support
+- ✅ Payment system with transaction tracking
+
+### 🔄 In Progress:
+- 🔄 Advanced payment gateway integrations
+- 🔄 Enhanced error handling and validation
+- 🔄 Comprehensive test coverage
+
+### 📋 Planned Features:
 - [ ] Product reviews and ratings
 - [ ] Advanced search and filtering
 - [ ] Email notifications
-- [ X ] API documentation with Swagger/OpenAPI
 - [ ] Wishlist functionality
-- [ ] Inventory tracking
+- [ ] Inventory tracking with low stock alerts
 - [ ] Discount and coupon system
+- [ ] User address book
+- [ ] Order history and reordering
+- [ ] Multi-vendor marketplace support
+- [ ] Advanced analytics and reporting
+
+## ⚠️ Important Notes
+
+- This project uses SQLite for development. For production, configure a production database (PostgreSQL recommended)
+- Secret keys and sensitive settings should be moved to environment variables for production
+- CORS headers are configured for development; adjust for production domains
+- The current payment system is a foundation - integrate with actual payment gateways for production use
 
 ## 🤝 Contributing
 
