@@ -27,7 +27,7 @@ A robust, scalable RESTful API for e-commerce platforms built with Django and Dj
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/yourusername/django-ecommerce-api.git
+git clone https://github.com/angelchiav/django-ecommerce-api.git
 cd django-ecommerce-api
 ```
 
