@@ -166,5 +166,8 @@ This project is licensed under a custom license. See the [LICENSE](LICENSE) file
 - All contributors who help improve this project
 
 ---
+<<<<<<< HEAD
 
 Made with ❤️ by Angel Chia Vicuña 
+=======
+>>>>>>> 69a3a0b8065cc626e8667915b19ea0bfca84781d

@@ -2,8 +2,17 @@ from django.db import models
 from django.utils.text import slugify
 
 class Category(models.Model):
-    name = models.CharField('Name', max_length=150, unique=True)
-    slug = models.SlugField('Slug', max_length=100, unique=True, blank=True)
+    name = models.CharField(
+        'Name', 
+        max_length=150, 
+        unique=True
+        )
+    slug = models.SlugField(
+        'Slug', 
+        max_length=100, 
+        unique=True, 
+        blank=True
+        )
     parent = models.ForeignKey(
         'self', 
         on_delete=models.CASCADE,
@@ -11,9 +20,18 @@ class Category(models.Model):
         blank=True, null=True,
         verbose_name='Father category'
     )
-    is_active = models.BooleanField('Is active', default=True)
-    created_at = models.DateTimeField('Created at', auto_now_add=True)
-    updated_at = models.DateTimeField('Updated at', auto_now=True)
+    is_active = models.BooleanField(
+        'Is active',
+        default=True
+        )
+    created_at = models.DateTimeField(
+        'Created at', 
+        auto_now_add=True
+        )
+    updated_at = models.DateTimeField(
+        'Updated at', 
+        auto_now=True
+        )
 
     class Meta:
         verbose_name = "Category"
@@ -29,20 +47,51 @@ class Category(models.Model):
         return self.name
     
 class Product(models.Model):
-    sku = models.CharField('SKU', max_length=30, unique=True)
-    name = models.CharField('Name', max_length=150)
-    slug = models.SlugField('Slug', max_length=150, unique=True, blank=True)
-    description = models.TextField('Description', blank=True)
-    price = models.DecimalField('Price', max_digits=10, decimal_places=2)
-    stock = models.PositiveIntegerField('Stock', default=0)
-    is_active = models.BooleanField('Is active', default=True)
+    sku = models.CharField(
+        'SKU', 
+        max_length=30, 
+        unique=True
+        )
+    name = models.CharField(
+        'Name', 
+        max_length=150
+        )
+    slug = models.SlugField(
+        'Slug', 
+        max_length=150, 
+        unique=True, 
+        blank=True
+        )
+    description = models.TextField(
+        'Description', 
+        blank=True
+        )
+    price = models.DecimalField(
+        'Price', 
+        max_digits=10, 
+        decimal_places=2
+        )
+    stock = models.PositiveIntegerField(
+        'Stock', 
+        default=0
+        )
+    is_active = models.BooleanField(
+        'Is active', 
+        default=True
+        )
     categories = models.ManyToManyField(
         Category, 
         related_name='products', 
         verbose_name='Categories'
     )
-    created_at = models.DateTimeField('Created at', auto_now_add=True)
-    updated_at = models.DateTimeField('Updated at', auto_now=True)
+    created_at = models.DateTimeField(
+        'Created at', 
+        auto_now_add=True
+        )
+    updated_at = models.DateTimeField(
+        'Updated at', 
+        auto_now=True
+        )
     class Meta:
         verbose_name = 'Product'
         verbose_name_plural = 'Products'
