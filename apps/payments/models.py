@@ -5,15 +5,22 @@ from apps.orders.models import Order
 
 class Payment(models.Model):
 
+    STATUS_PENDING = 'pending'
+    STATUS_SUCCEEDED = 'succeeded'
+    STATUS_FAILED = 'failed'
+    STATUS_CANCELED = 'canceled'
+    STATUS_REFUNDED = 'refunded'
+    STATUS_DISPUTED = 'disputed'
+
     STATUS_CHOICES = [
         (STATUS_PENDING, 'Pending'),
         (STATUS_SUCCEEDED, 'Succeeded'),
         (STATUS_FAILED, 'Failed'),
         (STATUS_CANCELED, 'Canceled'),
-        (STATUS_REFUNDED, 'refunded'),
-        (STATUS_DISPUTED = 'disputed'),
+        (STATUS_REFUNDED, 'Refunded'),
+        (STATUS_DISPUTED, 'Disputed')
     ]
-
+    
     order = models.OneToOneField(
         Order,
         on_delete=models.CASCADE,

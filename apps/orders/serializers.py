@@ -4,10 +4,6 @@ from .models import Order, OrderItem
 
 
 class OrderItemSerializer(serializers.ModelSerializer):
-    """
-    Serializer de lectura y escritura para los artículos de un pedido.
-    Calcula subtotal = quantity * unit_price y valida valores positivos.
-    """
     subtotal = serializers.DecimalField(
         max_digits=10, decimal_places=2, read_only=True
     )
@@ -33,10 +29,6 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    """
-    Serializer para pedidos, con items anidados.
-    Calcula total_amount a partir de la suma de subtotales.
-    """
     items = OrderItemSerializer(many=True)
 
     class Meta:
