@@ -251,5 +251,3 @@ This project is licensed under a custom license. See the [LICENSE](LICENSE) file
 - Django Software Foundation for the amazing framework
 - Django REST Framework team for the powerful API toolkit
 - All contributors who help improve this project
-
----
