@@ -140,3 +140,16 @@ class CreateOrderFromCartSerializer(serializers.ModelSerializer):
     def validate_shipping_address(self, value):
         if not value.strip():
             raise serializers.ValidationError("Shipping address is required")
+        return value
+
+class OrderStatusUpdateSerializer(serializers.ModelSerializer):
+    """Serializer for updating order status"""
+    class Meta:
+        model = PaymentTransaction
+        fields = [
+            'id',
+            'success',
+            'raw_response',
+            'created_at'
+        ]
+        read_only_fields = ['id', 'created_at']
