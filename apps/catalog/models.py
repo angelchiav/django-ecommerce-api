@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.text import slugify
+from django.core.exceptions import ValidationError
 
 class Category(models.Model):
     name = models.CharField(
@@ -108,6 +109,15 @@ class Product(models.Model):
     
     def __str__(self):
         return f"{self.name} ({self.sku})"
+    
+    def clean_price(self):
+        if self.price <= 0:
+            raise ValidationError("The price must be greater than 0")
+        
+    def clean_stock(self):
+        if self.stock <= 0:
+            self.is_active = False
+            raise ValidationError("")
     
 class ProductImage(models.Model):
     product = models.ForeignKey(
