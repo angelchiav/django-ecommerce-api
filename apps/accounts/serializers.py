@@ -1,8 +1,58 @@
 from rest_framework import serializers
 from django.contrib.auth import password_validation
+from django.contrib.auth.password_validation import validate_password
 from .models import User
 
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    """Detailed user profile serializer with all fields"""
+    
+    class Meta:
+        model = User
+        fields = [
+            'id',
+            'username',
+            'email',
+            'first_name',
+            'last_name',
+            'phone',
+            'is_email_verified',
+            'is_phone_verified',
+            'role',
+            'date_of_birth',
+            'profile_image',
+            'address_line_1',
+            'address_line_2',
+            'city',
+            'state',
+            'postal_code',
+            'country',
+            'date_joined',
+            'last_login',
+        ]
+        read_only_fields = [
+            'id',
+            'is_email_verified',
+            'is_phone_verified',
+            'role',
+            'date_joined',
+            'last_login',
+        ]
+        extra_kwargs = {
+            'email': {'required': True},
+            'date_of_birth': {'required': False},
+        }
+
+    def validate_email(self, value):
+        user = self.context['request'].user if self.context.get('request') else None
+        if User.objects.filter(email=value).exclude(pk=user.pk if user else None).exists():
+            raise serializers.ValidationError("A user with this email already exists.")
+        return value
+
+
 class UserSerializer(serializers.ModelSerializer):
+    """Basic user serializer for public information"""
+    
     class Meta:
         model = User
         fields = [
@@ -12,19 +62,21 @@ class UserSerializer(serializers.ModelSerializer):
             'first_name',
             'last_name',
             'is_active',
-            'is_staff',
             'date_joined',
         ]
         read_only_fields = [
             'id',
             'is_active',
-            'is_staff',
             'date_joined',
         ]
-    
+
+
 class UserRegistrationSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True)
-    password2 = serializers.CharField(write_only=True)
+    """User registration serializer with password validation"""
+    
+    password = serializers.CharField(write_only=True, style={'input_type': 'password'})
+    password2 = serializers.CharField(write_only=True, style={'input_type': 'password'})
+
     class Meta:
         model = User
         fields = [
@@ -34,40 +86,70 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             'last_name',
             'password',
             'password2',
+            'phone',
         ]
-    
+        extra_kwargs = {
+            'email': {'required': True},
+            'first_name': {'required': True},
+            'last_name': {'required': True},
+        }
+
     def validate(self, data):
         if data['password'] != data['password2']:
             raise serializers.ValidationError({"password": "The passwords do not match."})
-        password_validation.validate_password(data['password'], self.instance)
+        
+        # Validate password strength
+        password_validation.validate_password(data['password'])
         return data
-    
+
     def create(self, validated_data):
         validated_data.pop('password2')
         password = validated_data.pop('password')
+        
         user = User(**validated_data)
         user.set_password(password)
+        user.role = 'customer'  # Default role
         user.save()
         return user
+
+
+class UserPasswordChangeSerializer(serializers.Serializer):
+    """Password change serializer"""
     
-class UserPasswordChangeSerializer(serializers.ModelSerializer):
-    old_password = serializers.CharField(write_only=True)
-    new_password = serializers.CharField(write_only=True)
+    old_password = serializers.CharField(write_only=True, style={'input_type': 'password'})
+    new_password = serializers.CharField(write_only=True, style={'input_type': 'password'})
+    new_password2 = serializers.CharField(write_only=True, style={'input_type': 'password'})
 
     def validate_old_password(self, value):
         user = self.context['request'].user
         if not user.check_password(value):
-            raise serializers.ValidationError("The actual password is incorrect.")
+            raise serializers.ValidationError("The current password is incorrect.")
         return value
-    
-    def validate_new_password(self, value):
-        password_validation.validate_password(value, self.context['request'].user)
-        return value
-    
+
+    def validate(self, data):
+        if data['new_password'] != data['new_password2']:
+            raise serializers.ValidationError({"new_password": "The new passwords do not match."})
+        
+        validate_password(data['new_password'], self.context['request'].user)
+        return data
+
     def save(self):
         user = self.context['request'].user
         user.set_password(self.validated_data['new_password'])
         user.save()
         return user
 
+
+class UserAddressSerializer(serializers.ModelSerializer):
+    """Serializer for user address information"""
     
+    class Meta:
+        model = User
+        fields = [
+            'address_line_1',
+            'address_line_2',
+            'city',
+            'state',
+            'postal_code',
+            'country',
+        ]
