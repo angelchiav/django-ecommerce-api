@@ -196,16 +196,16 @@ python manage.py test
 
 ## Development Status
 
-### ✅ Completed Features:
-- ✅ Complete API documentation with Swagger/OpenAPI
-- ✅ Enhanced cart functionality with stock validation
-- ✅ Advanced permission system with read-only public access
-- ✅ Comprehensive payment system with transaction tracking
-- ✅ User management with role-based access
-- ✅ Product catalog with categories and images
-- ✅ Order management with status tracking
+### Completed Features:
+- [x] Complete API documentation with Swagger/OpenAPI
+- [x] Enhanced cart functionality with stock validation
+- [x] Advanced permission system with read-only public access
+- [x] Comprehensive payment system with transaction tracking
+- [x] User management with role-based access
+- [x] Product catalog with categories and images
+- [x] Order management with status tracking
 
-### 📋 Planned Features:
+### Planned Features:
 - [ ] Product reviews and ratings
 - [ ] Advanced search and filtering
 - [ ] Email notifications
@@ -233,13 +233,13 @@ Contributions are welcome! Please feel free to submit a Pull Request. For major 
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-## 📝 License
+## License
 
 This project is licensed under a custom license. See the [LICENSE](LICENSE) file for details.
 
 **Note**: Commercial use requires explicit permission from the author.
 
-## 👤 Author
+## Author
 
 **Angel Chia**
 - Email: achiavicuna@gmail.com
