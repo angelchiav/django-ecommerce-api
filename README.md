@@ -1,16 +1,16 @@
 # Django E-commerce API
 
-A robust, scalable RESTful API for e-commerce platforms built with Django and Django REST Framework. This project provides a comprehensive backend solution for modern e-commerce applications with features including user authentication, product catalog management, shopping cart functionality, order processing, and payment handling.
+A robust, scalable RESTful API for e-commerce platforms built with Django and Django REST Framework. This project provides a comprehensive backend solution for modern e-commerce applications featuring user authentication, product catalog management, shopping cart functionality, order processing, and payment handling.
 
 ## 🚀 Features
 
 - **User Management**: Custom user model with role-based access (Customer, Seller, Admin)
-- **Authentication**: JWT-based authentication with token refresh
-- **Product Catalog**: Complete product and category management with image support
+- **Authentication**: JWT-based authentication with token refresh capabilities
+- **Product Catalog**: Complete product and category management with image support and hierarchical categories
 - **Shopping Cart**: Full cart functionality for both authenticated and guest users with stock validation
-- **Order Management**: End-to-end order lifecycle handling with order items
-- **Payment Processing**: Flexible payment integration with transaction tracking
-- **API Documentation**: Interactive API documentation with Swagger/ReDoc
+- **Order Management**: End-to-end order lifecycle handling with detailed order items
+- **Payment Processing**: Comprehensive payment system with transaction tracking, refunds, and webhook support
+- **API Documentation**: Interactive API documentation with Swagger/OpenAPI
 - **Modular Architecture**: Organized into separate Django apps for maintainability and scalability
 - **Permission System**: Granular permissions with read-only access for public endpoints
 
@@ -61,7 +61,7 @@ python manage.py createsuperuser
 python manage.py runserver
 ```
 
-The API will be available at `http://localhost:8000/`
+The API will be available by default at `http://localhost:8000/` or `http://127.0.0.1:8000/`
 
 ## 📁 Project Structure
 
@@ -86,7 +86,7 @@ django-ecommerce-api/
 - `POST /api/token/` - Obtain JWT token
 - `POST /api/token/refresh/` - Refresh JWT token
 - `GET /api/accounts/user/me/` - Get current user profile
-- `POST /api/accounts/user/{id}/change_password/` - Change password
+- `POST /api/accounts/user/change_password/` - Change password
 
 ### Catalog
 - `GET /api/catalog/products/` - List all products (public)
@@ -111,60 +111,63 @@ django-ecommerce-api/
 - `POST /api/orders/orders/` - Create a new order
 - `GET /api/orders/orders/{id}/` - Get order details
 - `PUT /api/orders/orders/{id}/` - Update order status
+- `POST /api/orders/orders/create_from_cart/` - Create order from cart
 
 ### Payments
 - `GET /api/payments/payments/` - List payments
 - `POST /api/payments/payments/` - Create a new payment
 - `GET /api/payments/payments/{id}/` - Get payment details
+- `POST /api/payments/payments/{id}/process/` - Process payment
+- `POST /api/payments/payments/{id}/refund/` - Refund payment (admin only)
 - `GET /api/payments/payment-transactions/` - List payment transactions
 
 ## 📊 Data Models
 
-### User Model
-- Extended Django's AbstractUser
-- Added fields: email (unique), phone, role, address details
-- Roles: Customer, Seller, Admin
-- Built-in verification flags for email and phone
+### User Model (Extended AbstractUser)
+- Email (unique), phone, role (Customer/Seller/Admin)
+- Complete address information
+- Email and phone verification flags
 
 ### Product & Category Models
 - Products with SKU, name, slug, description, price, stock
-- Categories with hierarchical structure (parent-child relationships)
-- Support for multiple product images with ordering
-- Automatic slug generation from names
+- Hierarchical categories with parent-child relationships
+- Multiple product images with ordering and featured image support
+- Automatic slug generation
 
 ### Cart & CartItem Models
 - Support for both authenticated and guest users (session-based)
-- Tracking of items, quantities, and prices
 - Stock validation on cart operations
-- Automatic price calculation and cart totals
+- Automatic price calculation and totals
 
 ### Order & OrderItem Models
-- Order number, status tracking, total amount
-- Linked to user and contains order items
-- Status options: pending, processing, shipped, completed, cancelled
-- Automatic total calculation from order items
+- Complete order lifecycle with status tracking
+- Automatic order number generation
+- Stock management integration
 
 ### Payment Models
-- Payment processing with transaction tracking
-- Support for different payment statuses and currencies
-- OneToOne relationship with orders
-- Transaction history for audit trails
+- Comprehensive payment processing with multiple statuses
+- Transaction history and audit trails
+- Refund management system
+- Webhook handling for payment providers
 
 ## 🔐 Authentication & Permissions
 
-The API uses JWT (JSON Web Tokens) for authentication. Protected endpoints require the Authorization header with the format: `Bearer <token>`.
+The API uses JWT (JSON Web Tokens) for authentication. Protected endpoints require the Authorization header:
+```
+Authorization: Bearer <token>
+```
 
 ### Permission Levels:
 - **Public**: Anyone can view products and categories
 - **Authenticated**: Users can manage their own carts and orders
-- **Admin**: Full CRUD access to products, categories, and all data
+- **Admin**: Full CRUD access to all resources
 
 ## 📚 API Documentation
 
 Interactive API documentation is available at:
-- Swagger UI: `/api/docs/swagger/`
-- ReDoc: `/api/docs/redoc/`
-- Schema: `/api/schema/`
+- **Swagger UI**: `/api/docs/swagger/`
+- **ReDoc**: `/api/docs/redoc/`
+- **Schema**: `/api/schema/`
 
 ## 🛒 Shopping Cart Features
 
@@ -177,11 +180,12 @@ Interactive API documentation is available at:
 
 ## 💳 Payment System
 
-- **Multiple payment statuses**: pending, succeeded, failed, canceled
+- **Multiple payment statuses**: pending, processing, succeeded, failed, canceled, refunded
 - **Transaction tracking** for audit and webhook handling
 - **Payment-Order linking** with OneToOne relationship
-- **Currency support** with ISO3 codes
-- **Transaction history** with raw response storage
+- **Refund management** with partial and full refund support
+- **Webhook handling** for real-time payment updates
+- **Payment method management** for users
 
 ## 🧪 Testing
 
@@ -192,19 +196,14 @@ python manage.py test
 
 ## 🚧 Development Status
 
-This project is currently under active development. Recent improvements include:
-
 ### ✅ Completed Features:
-- ✅ API documentation with Swagger/OpenAPI
+- ✅ Complete API documentation with Swagger/OpenAPI
 - ✅ Enhanced cart functionality with stock validation
-- ✅ Improved permission system with read-only public access
-- ✅ Better cart management with session support
-- ✅ Payment system with transaction tracking
-
-### 🔄 In Progress:
-- 🔄 Advanced payment gateway integrations
-- 🔄 Enhanced error handling and validation
-- 🔄 Comprehensive test coverage
+- ✅ Advanced permission system with read-only public access
+- ✅ Comprehensive payment system with transaction tracking
+- ✅ User management with role-based access
+- ✅ Product catalog with categories and images
+- ✅ Order management with status tracking
 
 ### 📋 Planned Features:
 - [ ] Product reviews and ratings
@@ -214,7 +213,6 @@ This project is currently under active development. Recent improvements include:
 - [ ] Inventory tracking with low stock alerts
 - [ ] Discount and coupon system
 - [ ] User address book
-- [ ] Order history and reordering
 - [ ] Multi-vendor marketplace support
 - [ ] Advanced analytics and reporting
 
@@ -245,9 +243,3 @@ This project is licensed under a custom license. See the [LICENSE](LICENSE) file
 
 **Angel Chia**
 - Email: achiavicuna@gmail.com
-
-## 🙏 Acknowledgments
-
-- Django Software Foundation for the amazing framework
-- Django REST Framework team for the powerful API toolkit
-- All contributors who help improve this project
