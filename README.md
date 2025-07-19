@@ -2,7 +2,7 @@
 
 A robust, scalable RESTful API for e-commerce platforms built with Django and Django REST Framework. This project provides a comprehensive backend solution for modern e-commerce applications featuring user authentication, product catalog management, shopping cart functionality, order processing, and payment handling.
 
-## 🚀 Features
+## Features
 
 - **User Management**: Custom user model with role-based access (Customer, Seller, Admin)
 - **Authentication**: JWT-based authentication with token refresh capabilities
@@ -14,7 +14,7 @@ A robust, scalable RESTful API for e-commerce platforms built with Django and Dj
 - **Modular Architecture**: Organized into separate Django apps for maintainability and scalability
 - **Permission System**: Granular permissions with read-only access for public endpoints
 
-## 📋 Requirements
+## Requirements
 
 - Python 3.8+
 - Django 5.2.4
@@ -23,7 +23,7 @@ A robust, scalable RESTful API for e-commerce platforms built with Django and Dj
 - drf-spectacular 0.28.0
 - Other dependencies listed in requirements.txt
 
-## 🛠️ Installation
+## Installation
 
 1. **Clone the repository**
 ```bash
@@ -63,7 +63,7 @@ python manage.py runserver
 
 The API will be available by default at `http://localhost:8000/` or `http://127.0.0.1:8000/`
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 django-ecommerce-api/
@@ -79,7 +79,7 @@ django-ecommerce-api/
 └── README.md
 ```
 
-## 🔗 API Endpoints
+## API Endpoints
 
 ### Authentication
 - `POST /api/accounts/register/` - User registration
@@ -121,7 +121,7 @@ django-ecommerce-api/
 - `POST /api/payments/payments/{id}/refund/` - Refund payment (admin only)
 - `GET /api/payments/payment-transactions/` - List payment transactions
 
-## 📊 Data Models
+## Data Models
 
 ### User Model (Extended AbstractUser)
 - Email (unique), phone, role (Customer/Seller/Admin)
@@ -150,7 +150,7 @@ django-ecommerce-api/
 - Refund management system
 - Webhook handling for payment providers
 
-## 🔐 Authentication & Permissions
+## Authentication & Permissions
 
 The API uses JWT (JSON Web Tokens) for authentication. Protected endpoints require the Authorization header:
 ```
@@ -162,14 +162,14 @@ Authorization: Bearer <token>
 - **Authenticated**: Users can manage their own carts and orders
 - **Admin**: Full CRUD access to all resources
 
-## 📚 API Documentation
+## API Documentation
 
 Interactive API documentation is available at:
 - **Swagger UI**: `/api/docs/swagger/`
 - **ReDoc**: `/api/docs/redoc/`
 - **Schema**: `/api/schema/`
 
-## 🛒 Shopping Cart Features
+## Shopping Cart Features
 
 - **Session-based carts** for guest users
 - **User-based carts** for authenticated users
@@ -178,7 +178,7 @@ Interactive API documentation is available at:
 - **Cart item management** with quantity updates and removals
 - **Cart persistence** across sessions
 
-## 💳 Payment System
+## Payment System
 
 - **Multiple payment statuses**: pending, processing, succeeded, failed, canceled, refunded
 - **Transaction tracking** for audit and webhook handling
@@ -187,14 +187,14 @@ Interactive API documentation is available at:
 - **Webhook handling** for real-time payment updates
 - **Payment method management** for users
 
-## 🧪 Testing
+## Testing
 
 Run the test suite:
 ```bash
 python manage.py test
 ```
 
-## 🚧 Development Status
+## Development Status
 
 ### ✅ Completed Features:
 - ✅ Complete API documentation with Swagger/OpenAPI
@@ -216,14 +216,14 @@ python manage.py test
 - [ ] Multi-vendor marketplace support
 - [ ] Advanced analytics and reporting
 
-## ⚠️ Important Notes
+## Important Notes
 
 - This project uses SQLite for development. For production, configure a production database (PostgreSQL recommended)
 - Secret keys and sensitive settings should be moved to environment variables for production
 - CORS headers are configured for development; adjust for production domains
 - The current payment system is a foundation - integrate with actual payment gateways for production use
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
 
