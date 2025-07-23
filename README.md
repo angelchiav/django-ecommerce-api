@@ -2,7 +2,7 @@
 
 A robust, scalable RESTful API for e-commerce platforms built with Django and Django REST Framework. This project provides a comprehensive backend solution for modern e-commerce applications with features including user authentication, product catalog management, shopping cart functionality, order processing, and payment handling.
 
-## 🚀 Features
+## Features
 
 - **User Management**: Custom user model with role-based access (Customer, Seller, Admin)
 - **Authentication**: JWT-based authentication with token refresh
@@ -14,7 +14,7 @@ A robust, scalable RESTful API for e-commerce platforms built with Django and Dj
 - **Modular Architecture**: Organized into separate Django apps for maintainability and scalability
 - **Permission System**: Granular permissions with read-only access for public endpoints
 
-## 📋 Requirements
+## Requirements
 
 - Python 3.8+
 - Django 5.2.4
@@ -23,7 +23,7 @@ A robust, scalable RESTful API for e-commerce platforms built with Django and Dj
 - drf-spectacular 0.28.0
 - Other dependencies listed in requirements.txt
 
-## 🛠️ Installation
+## Installation
 
 1. **Clone the repository**
 ```bash
@@ -63,7 +63,7 @@ python manage.py runserver
 
 The API will be available at `http://localhost:8000/`
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 django-ecommerce-api/
@@ -79,7 +79,7 @@ django-ecommerce-api/
 └── README.md
 ```
 
-## 🔗 API Endpoints
+## API Endpoints
 
 ### Authentication
 - `POST /api/accounts/register/` - User registration
@@ -118,7 +118,7 @@ django-ecommerce-api/
 - `GET /api/payments/payments/{id}/` - Get payment details
 - `GET /api/payments/payment-transactions/` - List payment transactions
 
-## 📊 Data Models
+## Data Models
 
 ### User Model
 - Extended Django's AbstractUser
@@ -150,7 +150,7 @@ django-ecommerce-api/
 - OneToOne relationship with orders
 - Transaction history for audit trails
 
-## 🔐 Authentication & Permissions
+## Authentication & Permissions
 
 The API uses JWT (JSON Web Tokens) for authentication. Protected endpoints require the Authorization header with the format: `Bearer <token>`.
 
@@ -159,14 +159,14 @@ The API uses JWT (JSON Web Tokens) for authentication. Protected endpoints requi
 - **Authenticated**: Users can manage their own carts and orders
 - **Admin**: Full CRUD access to products, categories, and all data
 
-## 📚 API Documentation
+## API Documentation
 
 Interactive API documentation is available at:
 - Swagger UI: `/api/docs/swagger/`
 - ReDoc: `/api/docs/redoc/`
 - Schema: `/api/schema/`
 
-## 🛒 Shopping Cart Features
+## Shopping Cart Features
 
 - **Session-based carts** for guest users
 - **User-based carts** for authenticated users
@@ -175,7 +175,7 @@ Interactive API documentation is available at:
 - **Cart item management** with quantity updates and removals
 - **Cart persistence** across sessions
 
-## 💳 Payment System
+## Payment System
 
 - **Multiple payment statuses**: pending, succeeded, failed, canceled
 - **Transaction tracking** for audit and webhook handling
@@ -183,28 +183,28 @@ Interactive API documentation is available at:
 - **Currency support** with ISO3 codes
 - **Transaction history** with raw response storage
 
-## 🧪 Testing
+## Testing
 
 Run the test suite:
 ```bash
 python manage.py test
 ```
 
-## 🚧 Development Status
+## Development Status
 
 This project is currently under active development. Recent improvements include:
 
-### ✅ Completed Features:
-- ✅ API documentation with Swagger/OpenAPI
-- ✅ Enhanced cart functionality with stock validation
-- ✅ Improved permission system with read-only public access
-- ✅ Better cart management with session support
-- ✅ Payment system with transaction tracking
+### Completed Features:
+- [x] API documentation with Swagger/OpenAPI
+- [x] Enhanced cart functionality with stock validation
+- [x] Improved permission system with read-only public access
+- [x] Better cart management with session support
+- [x] Payment system with transaction tracking
 
-### 🔄 In Progress:
-- 🔄 Advanced payment gateway integrations
-- 🔄 Enhanced error handling and validation
-- 🔄 Comprehensive test coverage
+### In Progress:
+- [ ] Advanced payment gateway integrations
+- [ ] Enhanced error handling and validation
+- [ ] Comprehensive test coverage
 
 ### 📋 Planned Features:
 - [ ] Product reviews and ratings
@@ -225,7 +225,7 @@ This project is currently under active development. Recent improvements include:
 - CORS headers are configured for development; adjust for production domains
 - The current payment system is a foundation - integrate with actual payment gateways for production use
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
 

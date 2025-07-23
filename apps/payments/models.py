@@ -93,7 +93,7 @@ class PaymentMethod(models.Model):
             return f"{self.get_type_display()} ending in {self.last_four}"
         return f"{self.get_type_display()} - {self.provider}"
     
-
+    
 class Payment(models.Model):
     """
     Main payment record
