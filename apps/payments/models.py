@@ -464,11 +464,30 @@ class PaymentRefund(models.Model):
         decimal_places=2,
         validators=[MinValueValidator(Decimal('0.01'))]
     )
-    currency = models.CharField('Currency', max_length=3, default='USD')
+    currency = models.CharField(
+        'Currency', 
+        max_length=3, 
+        default='USD'
+    )
     
-    status = models.CharField('Status', max_length=20, choices=STATUS_CHOICES, default='pending')
-    reason = models.CharField('Reason', max_length=50, choices=REASON_CHOICES, default='customer_request')
-    description = models.TextField('Description', blank=True)
+    status = models.CharField(
+        'Status', 
+        max_length=20, 
+        choices=STATUS_CHOICES, 
+        default='pending'
+    )
+
+    reason = models.CharField(
+        'Reason', 
+        max_length=50, 
+        choices=REASON_CHOICES, 
+        default='customer_request'
+    )
+
+    description = models.TextField(
+        'Description', 
+        blank=True
+    )
     
     # Provider IDs
     refund_id = models.CharField(
@@ -479,9 +498,22 @@ class PaymentRefund(models.Model):
     )
     
     # Dates
-    requested_at = models.DateTimeField('Requested At', auto_now_add=True)
-    processed_at = models.DateTimeField('Processed At', null=True, blank=True)
-    completed_at = models.DateTimeField('Completed At', null=True, blank=True)
+    requested_at = models.DateTimeField(
+        'Requested At', 
+        auto_now_add=True
+    )
+
+    processed_at = models.DateTimeField(
+        'Processed At', 
+        null=True, 
+        blank=True
+    )
+
+    completed_at = models.DateTimeField(
+        'Completed At', 
+        null=True, 
+        blank=True
+    )
     
     # Additional information
     processed_by = models.ForeignKey(

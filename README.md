@@ -183,13 +183,6 @@ Interactive API documentation is available at:
 - **Currency support** with ISO3 codes
 - **Transaction history** with raw response storage
 
-## Testing
-
-Run the test suite:
-```bash
-python manage.py test
-```
-
 ## Development Status
 
 This project is currently under active development. Recent improvements include:

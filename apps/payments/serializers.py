@@ -68,7 +68,6 @@ class PaymentSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Currency must be a 3-character ISO code.")
         return value.upper()
 
-
 class PaymentListSerializer(serializers.ModelSerializer):
     """Simplified payment serializer for list views"""
     
@@ -86,6 +85,7 @@ class PaymentListSerializer(serializers.ModelSerializer):
             'status_display',
             'created_at',
         ]
+
 
 
 class PaymentCreateSerializer(serializers.ModelSerializer):
@@ -127,6 +127,8 @@ class PaymentStatusUpdateSerializer(serializers.ModelSerializer):
                     "Cannot change status of a successful payment."
                 )
         return value
+    
+
 
 
 class PaymentRefundSerializer(serializers.Serializer):

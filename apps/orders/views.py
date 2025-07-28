@@ -198,7 +198,6 @@ class OrderViewSet(viewsets.ModelViewSet):
 
         return Response(stats)
 
-
 class OrderItemViewSet(viewsets.ReadOnlyModelViewSet):
     """ViewSet for viewing order items"""
     queryset = OrderItem.objects.all()
