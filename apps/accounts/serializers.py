@@ -133,6 +133,7 @@ class UserPasswordChangeSerializer(serializers.Serializer):
         validate_password(data['new_password'], self.context['request'].user)
         return data
 
+# Reescritura del método save
     def save(self):
         user = self.context['request'].user
         user.set_password(self.validated_data['new_password'])
