@@ -67,6 +67,11 @@ class PaymentSerializer(serializers.ModelSerializer):
         if len(value) != 3:
             raise serializers.ValidationError("Currency must be a 3-character ISO code.")
         return value.upper()
+    
+    def can_be_refunded(self, value):
+        if value is True:
+            return True
+        return False
 
 class PaymentListSerializer(serializers.ModelSerializer):
     """Simplified payment serializer for list views"""
