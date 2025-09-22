@@ -44,9 +44,8 @@ class UserProfileSerializer(serializers.ModelSerializer):
         }
 
     def validate_email(self, value):
-        user = self.context['request'].user if self.context.get('request') else None
-        if User.objects.filter(email=value).exclude(pk=user.pk if user else None).exists():
-            raise serializers.ValidationError("A user with this email already exists.")
+        if not value.endswith("@gmail.com"):
+            raise serializers.ValidationError("The email needs to be Gmail.")
         return value
 
 
