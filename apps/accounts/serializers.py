@@ -153,3 +153,7 @@ class UserAddressSerializer(serializers.ModelSerializer):
             'postal_code',
             'country',
         ]
+        extra_kwargs = {
+            'city': {'required': True},
+            'country': {'required': True}
+        }
