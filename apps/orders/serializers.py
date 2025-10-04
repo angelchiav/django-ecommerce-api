@@ -33,6 +33,9 @@ class OrderItemSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Unit price must be greater than 0.")
         return value
 
+    def validate_subtotal(self, value):
+        if value <= 0:
+            raise serializers.ValidationError("Subtotal has to be greater than 0.")
 
 class OrderSerializer(serializers.ModelSerializer):
     """Complete order serializer"""
