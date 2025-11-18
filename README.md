@@ -185,33 +185,9 @@ Interactive API documentation is available at:
 
 ## Development Status
 
-This project is currently under active development. Recent improvements include:
+This project is currently under active development.
 
-### Completed Features:
-- [x] API documentation with Swagger/OpenAPI
-- [x] Enhanced cart functionality with stock validation
-- [x] Improved permission system with read-only public access
-- [x] Better cart management with session support
-- [x] Payment system with transaction tracking
-
-### In Progress:
-- [ ] Advanced payment gateway integrations
-- [ ] Enhanced error handling and validation
-- [ ] Comprehensive test coverage
-
-### 📋 Planned Features:
-- [ ] Product reviews and ratings
-- [ ] Advanced search and filtering
-- [ ] Email notifications
-- [ ] Wishlist functionality
-- [ ] Inventory tracking with low stock alerts
-- [ ] Discount and coupon system
-- [ ] User address book
-- [ ] Order history and reordering
-- [ ] Multi-vendor marketplace support
-- [ ] Advanced analytics and reporting
-
-## ⚠️ Important Notes
+## Important Notes
 
 - This project uses SQLite for development. For production, configure a production database (PostgreSQL recommended)
 - Secret keys and sensitive settings should be moved to environment variables for production
@@ -228,19 +204,13 @@ Contributions are welcome! Please feel free to submit a Pull Request. For major 
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-## 📝 License
+## License
 
 This project is licensed under a custom license. See the [LICENSE](LICENSE) file for details.
 
 **Note**: Commercial use requires explicit permission from the author.
 
-## 👤 Author
+## Author
 
 **Angel Chia**
 - Email: achiavicuna@gmail.com
-
-## 🙏 Acknowledgments
-
-- Django Software Foundation for the amazing framework
-- Django REST Framework team for the powerful API toolkit
-- All contributors who help improve this project
